@@ -25,25 +25,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields,api
 
-import math
-from openerp.osv import osv, fields
-from openerp import SUPERUSER_ID
-from openerp import tools, pooler
-from openerp.tools.translate import _
-
-import re
-import logging
-import pytz
-from lxml import etree
-
-
-class res_partner(osv.Model):
+class res_country_state_city(models.Model):
     _inherit = 'res.partner'
 
-    _columns = {
-        'city_id': fields.many2one('res.country.state.city', 'City'),
-    }
+
+    city_id = fields.Many2one('res.country.state.city', 'City'),
+
+
 
     '''def fields_view_get(self, cr, user, view_id=None, view_type='form',
                         context=None, toolbar=False, submenu=False):
@@ -57,16 +47,14 @@ class res_partner(osv.Model):
             res['arch'] = self.fields_view_get_address(
                 cr, user, res['arch'], context=context)
         return res'''
+    @api.onchange('city_id')
+    def _onchange_city_id(self):
+        self.city = self.city_id.name
+        self.state_id = self.city_id.state_id.id
+        self.country_id = self.city_id.state_id.country_id.id
 
-    def onchange_city(self, cr, uid, ids, city_id, context=None):
-        if city_id:
-            city = self.pool.get('res.country.state.city').browse(
-                cr, uid, city_id, context)
-            return {'value': {'city': city.name,
-                    'state_id': city.state_id.id,
-                    'country_id': city.country_id and city.country_id.id or False}}
-        return {}
-
+    """
+    to do ver esto
     def onchange_state_city(self, cr, uid, ids, state_id, city_id, context=None):
         res = super(res_partner, self).onchange_state(cr, uid, ids, state_id, context)
         if city_id and state_id and self.pool.get('res.country.state.city').browse(cr, uid, city_id, context).state_id.id != state_id:
@@ -74,4 +62,4 @@ class res_partner(osv.Model):
                 res['value']['city'] = None
                 res['value']['city_id'] = None
         return res
-
+    """

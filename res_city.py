@@ -1,14 +1,8 @@
-# -*- encoding: utf-8 -*-
-###########################################################################
-#    Module Writen to OpenERP, Open Source Management Solution
+# -*- coding: utf-8 -*-
+##############################################################################
 #
-#    Copyright (c) 2013 Vauxoo - http://www.vauxoo.com/
-#    All Rights Reserved.
-#    info Vauxoo (info@vauxoo.com)
-############################################################################
-#    Coded by: moylop260 (moylop260@vauxoo.com)
-#              Isaac Lopez (isaac@vauxoo.com)
-############################################################################
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,29 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields
 
-from openerp.osv import osv, fields
-from openerp import tools
-from openerp.tools.translate import _
+class res_country_state_city(models.Model):
 
-import math
-import re
-import logging
-from lxml import etree
-
-
-class res_country_state_city(osv.Model):
     _description = "Country state city"
     _name = 'res.country.state.city'
-    _columns = {
-        'name': fields.char('Name', size=64, required=True, select=True,
-                help='Administrative divisions of a state.'),
-        'state_id': fields.many2one('res.country.state', 'State',
-                    required=True),
-        'country_id': fields.related('state_id', 'country_id',
-                    type='many2one', relation='res.country',
-                    string='Country', store=True, readonly=True),
-        'code': fields.char('City Code', size=5,
-                            help='The city code in max. five chars.'),
-    }
     _order = 'name'
+ 
+
+    name = fields.Char('Name',size=64, required=True, select=True,
+                help='Administrative divisions of a state.')
+
+    state_id =  fields.Many2one('res.country.state', 'State', required=True),
+    code =  fields.Char('City Code', size=5,help='The city code in max. five chars.')
+    country_id =  fields.Many2one('res.country', 'State',string='Country', 
+                readonly=True,related="state_id.country_id")
+
+
+
+
