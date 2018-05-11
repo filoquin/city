@@ -28,9 +28,9 @@
 
 {
     "name" : "City",
-    "version" : "1.0",
-    "author" : "Vauxoo",
-    "category" : "Localization/Mexico",
+    "version" : "9.0",
+    "author" : "Vauxoo, filoquin",
+    "category" : "Localization",
     "description" : """This module creates the city model similar to states model and adds the field city_id on res partner.
     """,
     "website" : "http://www.vauxoo.com/",
@@ -40,8 +40,8 @@
         ],
     "demo" : [],
     "data" : [
-        'res_city_view.xml',
-        'partner_address_view.xml',
+        'views/country_state_city.xml',
+        'views/res_partner.xml',
         'security/city_security.xml',
         'security/ir.model.access.csv',
     ],

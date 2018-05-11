@@ -26,4 +26,5 @@
 #
 ##############################################################################
 
-import models
+import res_country_state_city
+import res_partner

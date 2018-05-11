@@ -27,13 +27,10 @@ class res_country_state_city(models.Model):
     _order = 'name'
  
 
-    name = fields.Char('Name',size=64, required=True, select=True,
-                help='Administrative divisions of a state.')
-
-    state_id =  fields.Many2one('res.country.state', 'State', required=True),
-    code =  fields.Char('City Code', size=5,help='The city code in max. five chars.')
-    country_id =  fields.Many2one('res.country', 'State',string='Country', 
-                readonly=True,related="state_id.country_id")
+    code =  fields.Char('City Code', size = 5 ,help = 'The city code in max. five chars.')
+    name = fields.Char('Name',size=64, required=True, select=True,help='Administrative divisions of a state.')
+    state_id =  fields.Many2one('res.country.state', 'State', required=True)
+    #country_id =  fields.Many2one('res.country', string = 'Country',related = "state_id.country_id")
 
 
 
