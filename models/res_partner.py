@@ -32,7 +32,7 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
 
-    city_id = fields.Many2one('res.country.state.city', 'City')
+    city = fields.Many2one('res.country.state.city', 'City')
 
     '''def fields_view_get(self, cr, user, view_id=None, view_type='form',
                         context=None, toolbar=False, submenu=False):
@@ -47,15 +47,14 @@ class res_partner(models.Model):
                 cr, user, res['arch'], context=context)
         return res'''
 
-    @api.onchange('city_id')
-    def _onchange_city_id(self):
-        if self.city_id :
-            self.city = self.city_id.name
-            self.state_id = self.city_id.state_id.id
-            self.country_id = self.city_id.state_id.country_id.id
+    @api.onchange('city')
+    def _onchange_city(self):
+        if self.city :
+            self.state_id = self.city.state_id.id
+            self.country_id = self.city.state_id.country_id.id
 
     @api.onchange('state_id')
-    @api.depends('city_id')
+    @api.depends('city')
     def _onchange_state_id(self):
         self.city = None
-        self.city_id = None
+        self.city = None
