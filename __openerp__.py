@@ -41,7 +41,6 @@
     "demo" : [],
     "data" : [
         'views/country_state_city.xml',
-        'views/res_partner.xml',
         'security/city_security.xml',
         'security/ir.model.access.csv',
     ],
