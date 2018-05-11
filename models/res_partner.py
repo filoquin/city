@@ -57,4 +57,3 @@ class res_partner(models.Model):
     @api.depends('city')
     def _onchange_state_id(self):
         self.city = None
-        self.city = None
