@@ -2,6 +2,16 @@
 <openerp>
     <data>
 
+        <template id="contact" inherit_id="base.contact">
+
+
+            <xpath expr="//span[@itemprop='addressLocality']" position="replace">
+                <span itemprop="addressLocality" t-raw="city.name"/>
+
+           </xpath>
+        </template>
+
+
         <record id="view_country_state_city_tree" model="ir.ui.view">
             <field name="name">res.country.state.city.tree</field>
             <field name="model">res.country.state.city</field>
