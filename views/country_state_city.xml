@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-
         <template id="contact" inherit_id="base.contact">
-
-
             <xpath expr="//span[@t-raw='city']" position="replace">
-                <span itemprop="addressLocality" t-raw="city.name"/> asdasda
-
-           </xpath>
+                <span itemprop="addressLocality" t-raw="city.name"/>asdasda</xpath>
         </template>
-
-
         <record id="view_country_state_city_tree" model="ir.ui.view">
             <field name="name">res.country.state.city.tree</field>
             <field name="model">res.country.state.city</field>
@@ -23,7 +16,6 @@
                 </tree>
             </field>
         </record>
-
         <record id="view_country_state_city_form" model="ir.ui.view">
             <field name="name">res.country.state.city.form</field>
             <field name="model">res.country.state.city</field>
@@ -32,12 +24,11 @@
                     <group>
                         <field name="name"/>
                         <field name="code"/>
-                        <field name="state_id" options='{"no_open": True}'/>
+                        <field name="state_id" options="{&quot;no_open&quot;: True}"/>
                     </group>
                 </form>
             </field>
         </record>
-
         <record id="action_country_state_city" model="ir.actions.act_window">
             <field name="name">Cities</field>
             <field name="type">ir.actions.act_window</field>
@@ -45,7 +36,19 @@
             <field name="view_type">form</field>
             <field name="view_id" ref="view_country_state_city_tree"/>
         </record>
+        <record id="country_state_city_search" model="ir.ui.view">
+            <field name="name">country_state_city.search</field>
+            <field name="model">res.country.state.city</field>
+            <field name="arch" type="xml">
+                <search string="String">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="state_id"/>
 
-          <menuitem action="action_country_state_city" id="menu_country_state_city_partner" parent="base.menu_localisation" sequence="1" groups="base.group_no_one"/>
+                    <filter string="group by state " domain="[]" context="{'group_by' : 'state_id'}" />
+                </search>
+            </field>
+        </record>
+        <menuitem action="action_country_state_city" groups="base.group_no_one" id="menu_country_state_city_partner" parent="base.menu_localisation" sequence="1"/>
     </data>
 </openerp>
