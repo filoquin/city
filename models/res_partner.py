@@ -34,18 +34,6 @@ class res_partner(models.Model):
 
     city = fields.Many2one('res.country.state.city', 'City')
 
-    '''def fields_view_get(self, cr, user, view_id=None, view_type='form',
-                        context=None, toolbar=False, submenu=False):
-        if (not view_id) and (view_type == 'form') and context \
-            and context.get('force_email', False):
-            view_id = self.pool.get('ir.model.data').get_object_reference(
-                cr, user, 'base', 'res_partner_form_city_01')[1]
-        res = super(res_partner, self).fields_view_get(cr, user,
-            view_id, view_type, context, toolbar=toolbar, submenu=submenu)
-        if view_type == 'form':
-            res['arch'] = self.fields_view_get_address(
-                cr, user, res['arch'], context=context)
-        return res'''
 
     @api.onchange('city')
     def _onchange_city(self):
@@ -57,3 +45,38 @@ class res_partner(models.Model):
     @api.depends('city')
     def _onchange_state_id(self):
         self.city = None
+
+
+    def _display_address(self, cr, uid, address, without_company=False, context=None):
+
+        '''
+        The purpose of this function is to build and return an address formatted accordingly to the
+        standards of the country where it belongs.
+
+        :param address: browse record of the res.partner to format
+        :returns: the address formatted in a display that fit its country habits (or the default ones
+            if not country is specified)
+        :rtype: string
+        '''
+
+        # get the information that will be injected into the display format
+        # get the address format
+        address_format = address.country_id.address_format or \
+              "%(street)s\n%(street2)s\n%(city)s %(state_code)s %(zip)s\n%(country_name)s"
+        args = {
+            'state_code': address.state_id.code or '',
+            'state_name': address.state_id.name or '',
+            'country_code': address.country_id.code or '',
+            'country_name': address.country_id.name or '',
+            'company_name': address.parent_name or '',
+        }
+        for field in self._address_fields(cr, uid, context=context):
+            args[field] = getattr(address, field) or ''
+        if address.city:
+            args['city'] = address.city.name or ''
+
+        if without_company:
+            args['company_name'] = ''
+        elif address.parent_id:
+            address_format = '%(company_name)s\n' + address_format
+        return address_format % args

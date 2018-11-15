@@ -5,8 +5,8 @@
         <template id="contact" inherit_id="base.contact">
 
 
-            <xpath expr="//span[@itemprop='addressLocality']" position="replace">
-                <span itemprop="addressLocality" t-raw="city.name"/>
+            <xpath expr="//span[@t-raw='city']" position="replace">
+                <span itemprop="addressLocality" t-raw="city.name"/> asdasda
 
            </xpath>
         </template>
